@@ -5,7 +5,8 @@ const dynObj = (obj) => {
             if (prop in obj) {
                 return obj[prop];
             } else {
-                obj[prop] = 1;
+                obj[prop] = dynObj({});
+                return obj[prop];
             }
         }
 
@@ -15,6 +16,6 @@ const dynObj = (obj) => {
 
 const newObj = dynObj({a: 10});
 
-newObj.b;
+newObj.b.c.d;
 
 console.log(JSON.stringify(newObj));
