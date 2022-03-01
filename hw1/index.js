@@ -4,25 +4,30 @@ const util = (f, props) => {
     let promise = Promise.resolve();
     let queueLimit = (props.queueLimit || -2) + 1;
 
-    return (...args) => {
+    return async (...args) => {
+        let res;
         if (queueLimit) {
             --queueLimit;
             promise = new Promise((resolve) =>
                         promise.then(() => {
                             if (props?.delaySinceCompletion) {
-                                f(...args);
+                                res = f(...args);
                                 setTimeout(resolve, props?.delay || 1000);
                             } else {
                                 setTimeout(resolve, props?.delay || 1000);
                                 if (props?.waitForPrevious) {
-                                    f(...args);
+                                    res = f(...args);
                                 } else {
-                                    new Promise(() => f(...args));
+                                    console.log("hea");
+                                    new Promise(() => res = f(...args));
+                                    console.log("Ok");
                                 }
                             }
                             ++queueLimit;
                         }));
         }
+        await promise;
+        return res;
     };
 }
 
@@ -33,26 +38,32 @@ function sleep(miliseconds) {
     }
  }
 
-const f = (str) => {
-    
-    sleep(5000);
+const f = (str, index) => {
     console.log("I show ", str, "!");
+    sleep(5000);
+
+    return index;
 }
 
-const newF = util(f, { delay: 1000, delaySinceCompletion: true, queueLimit: 10, waitForPrevious: false });
+const newF = util(f, { delay: 200, delaySinceCompletion: false, queueLimit: 10, waitForPrevious: false });
 
-newF("H");
-newF("E");
-newF("L");
-newF("L");
-newF("O");
-newF("!");
+
+const asF =  () => {
+    newF("H", 1);
+    newF("E", 2);
+    newF("L", 3);
+};
+asF();
+
+newF("L", 4);
+newF("O", 5);
+newF("!", 6);
 
 setTimeout(() => {
-    newF("H");
-    newF("E");
-    newF("L");
-    newF("L");
-    newF("O");
-    newF("!");
+    newF("H", 7);
+    newF("E", 8);
+    newF("L", 9);
+    newF("L", 10);
+    newF("O", 11);
+    newF("!", 12);
 }, 5000);
