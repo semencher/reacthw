@@ -72,8 +72,14 @@ const getLazy = (obj) => {
 
 }
 
+let promise = (num) => new Promise((resolve) => setTimeout(() => resolve(num), 1000));
+
 const list = [1, 2, 3, 4, 5]
-const lazyIterator = getLazy(list)
+const lazyIterator = getLazy((async function *genList() {
+        for (let item = 1; item <= 5; ++item) {
+            yield await promise(item);
+        }
+    })())
   .map(x => { console.log('map 1'); return x + 10 })
   .map(x => console.log('map 2') || (x + 1) )
   .map((x, i) => {
