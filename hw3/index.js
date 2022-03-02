@@ -20,38 +20,48 @@ const getLazy = (obj) => {
         switch (prop) {
           case 'map': 
             return predicate => getLazy({
-              [Symbol.iterator]() { return this },
-              index: 0,
-              next() {
-                const { value, done } = iterator.next()
-                if (done) {
-                  return { done }
-                } else {
-                  return { done, value: predicate(value, this.index++) }
+                [Symbol.iterator]: function *genMap() {
+                    let index = 0
+                    while (true) {
+                        const { value, done } = iterator.next()
+                        if (!done) {
+                            yield predicate(value, this.index++)
+                        } else {
+                            return
+                        }
+                    }
                 }
-              }
             })
           case 'filter':
               return predicate => getLazy({
-                  [Symbol.iterator]() { return this },
-                  index: 0,
-                  next() {
-                      while (true) {
-                          const { value, done } = iterator.next()
-                          if (done) {
-                            return { done }
-                          } else if (predicate(value, this.index++)) {
-                            return { done, value }
-                          }
-                      }
-                  }
+                  [Symbol.iterator]: function *genFilt() {
+                        let index = 0
+                        while (true) {
+                            const { value, done } = iterator.next()
+                            if (done) {
+                                return
+                            } else if (predicate(value, this.index++)) {
+                                yield value
+                            }
+                        }
+                    }
               })
           case 'take':
             return (count) => getLazy({
-              [Symbol.iterator]() { return this },
-              next() {
-                return count-- ? iterator.next() : { done: true }
-              }
+              [Symbol.iterator]: function *genTake() {
+                    while (true) {
+                        if (count--) {
+                            const { value, done } = iterator.next()
+                            if (!done) {
+                                yield value
+                            } else {
+                                return
+                            }
+                        } else {
+                            return
+                        }
+                    }
+                }
             })
           default:
             return Reflect.get(...arguments)
