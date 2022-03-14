@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+import { useKeyDownEffect } from "./useKeyDownEffect";
+
 const SimpleComponent = React.memo(({ number, componentRerenderedTimes }) => {
   componentRerenderedTimes.current++;
 
@@ -16,6 +18,12 @@ export default function App() {
       .fill({ number: 0 })
       .map((item, index) => ({ number: item.number, id: String(index + 1) }))
   );
+
+  useKeyDownEffect((e) => {
+    if (e.key === "a") {
+      random();
+    }
+  })
 
   const random = () =>
     setData(
