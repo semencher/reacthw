@@ -49,18 +49,19 @@ export default function App() {
 
 // After
 
-import React from "react";
+import React, { useEffect } from "react";
 
-const SimpleComponent = ({ number, componentRerenderedTimes }) => {
+const SimpleComponent = React.memo(({ number, componentRerenderedTimes }) => {
   componentRerenderedTimes.current++;
 
   const onPress = () => alert(number);
 
   return <div onClick={() => onPress()}>Number: {number}</div>;
-};
+});
 
 export default function App() {
   const componentRerenderedTimes = React.useRef(0);
+  const divOfRenderTimes = React.createRef();
   const [data, setData] = React.useState(
     new Array(1000)
       .fill({ number: 0 })
@@ -72,9 +73,13 @@ export default function App() {
       data.map(({ id }) => ({ number: Math.floor(1 + Math.random() * 10), id }))
     );
 
+  useEffect(() => {
+    divOfRenderTimes.current.innerHTML = "Was rendered: " + componentRerenderedTimes.current;
+  });
+
   return (
     <div>
-      <div>Was rendered: {componentRerenderedTimes.current}</div>
+      <div ref={divOfRenderTimes}></div>
       <button onClick={() => random()}>random</button>
       <button
         onClick={() =>
@@ -85,6 +90,7 @@ export default function App() {
       </button>
       {data.map(item => (
         <SimpleComponent
+          key={"sc-" + item.id}
           number={item.number}
           componentRerenderedTimes={componentRerenderedTimes}
         />
