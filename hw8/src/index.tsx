@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 
 class Hello extends React.Component {
     render() {
-        return <h1>Hello world!</h1>;
+        const ex1 : string = "Hello TypeScript!";
+        return <h1>{ex1}</h1>;
     }
 }
 
