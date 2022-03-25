@@ -21,7 +21,7 @@ module.exports = {
     devtool: "source-map",
     module: {
         rules: [
-        {
+          {
             test: /\.(js|jsx|tsx|ts)$/,
             exclude: /node_modules/,
             use: [
@@ -36,7 +36,21 @@ module.exports = {
                 },
               },
             ],
-          }
+          },
+          {
+            test: /\.sass$/,
+            use: [
+              {
+                loader: "style-resources-loader",
+                options: {
+                  patterns: []
+                },
+              },
+              { loader: "style-loader" },
+              { loader: "css-loader", options: { modules: true } },
+              { loader: "sass-loader" }
+            ],
+          }    
         ]
     }
 }
