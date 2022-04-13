@@ -22,22 +22,22 @@ export default class ColorItem extends React.Component {
                                 <div className={style.list}>
                                     <ul>
                                         <li>
-                                            <button color="Red" onClick={(e) => { context.setColor({[this.props.val]: "red"}); this.selectColor(e)}}>
+                                            <button style={{background: "red"}} color="Red" onClick={(e) => { context.setColor({[this.props.val]: "red"}); this.selectColor(e)}}>
                                                 Red
                                             </button>
                                         </li>
                                         <li>
-                                            <button color="Yellow" onClick={(e) => { context.setColor({[this.props.val]: "yellow"}); this.selectColor(e)}}>
+                                            <button style={{background: "yellow"}} color="Yellow" onClick={(e) => { context.setColor({[this.props.val]: "yellow"}); this.selectColor(e)}}>
                                                 Yellow
                                             </button>
                                         </li>
                                         <li>
-                                            <button color="Blue" onClick={(e) => { context.setColor({[this.props.val]: "blue"}); this.selectColor(e)}}>
+                                            <button style={{background: "blue"}} color="Blue" onClick={(e) => { context.setColor({[this.props.val]: "blue"}); this.selectColor(e)}}>
                                                 Blue
                                             </button>
                                         </li>
                                         <li>
-                                            <button color="Orange" onClick={(e) => { context.setColor({[this.props.val]: "orange"}); this.selectColor(e)}}>
+                                            <button style={{background: "orange"}} color="Orange" onClick={(e) => { context.setColor({[this.props.val]: "orange"}); this.selectColor(e)}}>
                                                 Orange
                                             </button>
                                         </li>
