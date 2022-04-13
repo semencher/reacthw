@@ -21,6 +21,8 @@ class Hello extends React.Component {
 
     
     setColor = ({ leftColor, rightColor }) => {
+        leftColor = leftColor?.toLowerCase();
+        rightColor = rightColor?.toLowerCase();
         if (leftColor) {
             this.setState({leftColor});
         } else {

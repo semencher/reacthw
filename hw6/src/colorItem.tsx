@@ -1,12 +1,27 @@
 import React from "react";
 
+import Tree from "./tree"
 import style from "./main.sass";
-import Consumer from "./index";
 
 export default class ColorItem extends React.Component {
     constructor(props) {
         super(props);
         this.color = React.createRef();
+
+        this.structColor = {
+            "children": [
+                {
+                    "colors": ["Red", "Green", "Yellow"],
+                    "name": "Теплые"
+                },
+                {
+                    "colors": ["Blue", "Turquoise", "Violet"],
+                    "name": "Холодные"
+                }
+            ],
+            "colors": ["Black", "White"],
+            "name": "Цвета"
+        }
     }
 
     selectColor = (e) => {
@@ -15,37 +30,10 @@ export default class ColorItem extends React.Component {
 
     render() {
         return  (
-                    <Consumer>
-                        {context => (
-                            <div className={style.blockSource}>
-                                <div className={style.blockSourceColor} ref={this.color}></div>
-                                <div className={style.list}>
-                                    <ul>
-                                        <li>
-                                            <button style={{background: "red"}} color="Red" onClick={(e) => { context.setColor({[this.props.val]: "red"}); this.selectColor(e)}}>
-                                                Red
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button style={{background: "yellow"}} color="Yellow" onClick={(e) => { context.setColor({[this.props.val]: "yellow"}); this.selectColor(e)}}>
-                                                Yellow
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button style={{background: "blue"}} color="Blue" onClick={(e) => { context.setColor({[this.props.val]: "blue"}); this.selectColor(e)}}>
-                                                Blue
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button style={{background: "orange"}} color="Orange" onClick={(e) => { context.setColor({[this.props.val]: "orange"}); this.selectColor(e)}}>
-                                                Orange
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        )}
-                    </Consumer>
+                <div className={style.blockSource}>
+                    <div className={style.blockSourceColor} ref={this.color}></div>
+                        <Tree struct={this.structColor} refColor={this.color} val={this.props.val}></Tree>
+                </div>
                 );
     }
 }
